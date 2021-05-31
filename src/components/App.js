@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Checkboxes from './Checkboxes';
 import {data, listCheckboxesRating, listCheckboxesGenre} from '../data';
 
@@ -18,23 +18,26 @@ const App = () => {
     const handleFilters = (checkboxState, key) => {
         const newFilters = {...selected};
         newFilters[key] = checkboxState;
-        // Filtration process
-        for (let key in newFilters) {
-            if (
-                newFilters.hasOwnProperty(key) &&
-                Array.isArray(newFilters[key]) &&
-                newFilters[key].length > 0
-            ) {
-                if (key === 'rating') {
-                } else if (key === 'genre') {
-                }
-            }
-        }
-
-        // Save the filtered movies and update the state.
-        //  setMovies();
         setSelected(newFilters);
     };
+
+    useEffect(() => {
+        const filteredMovies = data
+            .filter(
+                (m) =>
+                    selected.rating.length === 0 ||
+                    selected.rating.includes(0) ||
+                    selected.rating.includes(m.rating)
+            )
+            .filter(
+                (m) =>
+                    selected.genre.length === 0 ||
+                    selected.genre.includes('') ||
+                    selected.genre.includes(m.genre)
+            );
+        console.log('filteredMovies', filteredMovies);
+        setMovies(filteredMovies);
+    }, [selected]);
 
     return (
         <div>
