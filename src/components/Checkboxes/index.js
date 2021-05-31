@@ -8,7 +8,13 @@ const Checkboxes = ({list, handleFilters}) => {
         const newState = handleToggle(checkboxId, checkedArray);
         setCheckedArray(newState);
         // Update this checked information into Parent Component
-        handleFilters(newState);
+        // The end array will be something like this:
+        // [2, 3, 4]
+        // ['Action', 'Comedy', 'Drama', 'Thriller']
+        const mapIdToValueArray = newState.map((id) => {
+            return list[id].value;
+        });
+        handleFilters(mapIdToValueArray);
     };
 
     return list.map((item, index) => {
